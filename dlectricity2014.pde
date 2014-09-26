@@ -13,6 +13,8 @@ boolean depthImage = false,
 int testDepth = 0;
 
 ArrayList<Person> people = new ArrayList<Person>();
+ArrayList<Channel> channels = new ArrayList<Channel>();
+int channelNum = 10;
 
 void setup()
 {
@@ -60,6 +62,11 @@ void setup()
 	test.wiggle = true;
 	people.add(test);
 	*/
+
+	// setup channels
+	for(int i = 0; i < channelNum; i++){
+		channels.add(new Channel(i));
+	}
 }
 
 void draw()
@@ -178,10 +185,6 @@ void draw()
 	translate(0, 0, width);
 	for(Person person : people){
 		person.draw();
-		if (serial != null){
-			serial.write("1c" + round(person.dmxs.get(0).speed) + "w");
-			serial.write("2c" + round(person.dmxs.get(1).speed) + "w");
-		}
 	}
 	popMatrix();
 	// end people
@@ -193,6 +196,15 @@ void draw()
 	// box(20);
 	// popStyle();
 	// end test box
+
+	// draw and send to channels
+	float step = width / channelNum;
+	for(int i = 0; i < channelNum; i++){
+		Channel c = channels.get(i);
+		c.draw(- width / 2 + step * i, height / 4, step, height / 4);
+		c.send();
+		c.tick();
+	}
 
 	popMatrix();
 }

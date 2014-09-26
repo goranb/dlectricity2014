@@ -27,8 +27,6 @@ class Person {
 	ArrayList<PVector> points;
 	ArrayList<Limb> limbs;
 
-	boolean wiggle = false;
-
 	boolean skipUpdate = true;
 
 	Person(int id){
@@ -93,14 +91,14 @@ class Person {
 
 		// speeds
         dmxs = new ArrayList<DMX>();
-        dmxs.add(new DMX(l_left_hand, 1));
-        dmxs.add(new DMX(l_right_hand, 2));
-        dmxs.add(new DMX(l_left_arm, 3));
-        dmxs.add(new DMX(l_right_arm, 4));
-        dmxs.add(new DMX(l_left_foot, 5));
-        dmxs.add(new DMX(l_right_foot, 6));
-        dmxs.add(new DMX(l_left_thigh, 7));
-        dmxs.add(new DMX(l_right_thigh, 8));
+        dmxs.add(new DMX(l_left_hand, channels.get(1)));
+        dmxs.add(new DMX(l_right_hand, channels.get(2)));
+        dmxs.add(new DMX(l_left_arm, channels.get(4)));
+        dmxs.add(new DMX(l_right_arm, channels.get(4)));
+        dmxs.add(new DMX(l_left_foot, channels.get(3)));
+        dmxs.add(new DMX(l_right_foot, channels.get(3)));
+        dmxs.add(new DMX(l_left_thigh, channels.get(4)));
+        dmxs.add(new DMX(l_right_thigh, channels.get(4)));
         //speeds.add(new Speed(right_shoulder, right_elbow, 3, 1000));
 	}
 
@@ -109,9 +107,6 @@ class Person {
 	}
 
 	void draw(color c){
-
-		wiggle(limbs); // wiggle the test case
-
 		pushMatrix();
 		//scale(-1.0, -1.0, -1.0); // flip Y	
 		drawLines();
@@ -173,7 +168,6 @@ class Person {
 
 	void rig(ArrayList<PVector> rig){
 		
-
 		boolean difference = false;
 		float tolerance = 0.01;
 
@@ -189,39 +183,12 @@ class Person {
 		if (difference){
 			for(DMX dmx : dmxs){
 	            dmx.tick();
-	        }	
+	        }
 		}
 	}
 
 	void drawLine(PVector v1, PVector v2){
 		line(v1.x, v1.y, v1.z, v2.x, v2.y, v2.z);
-	}
-
-	void wiggle(ArrayList<Limb> limbs){
-		
-		// skip if wiggle is not turned on
-		if (!wiggle) return;
-
-		//println("--------limbs--------");
-		// process limbs
-		for(Limb limb : limbs){
-			//if (limb.parent == null) continue;
-			PVector l = PVector.sub(limb.end, limb.start);
-			float m = l.mag();
-			//println(limb.name + " : " + m);
-			PVector r = PVector.random3D();
-			r.setMag(m);
-			l.lerp(r, 0.1);
-			l.setMag(m);
-			PVector oldEnd = new PVector(limb.end.x, limb.end.y, limb.end.z);
-			limb.end.set(PVector.add(limb.start, l));
-			for(Limb limbChild : limbs){
-				if (limbChild.parent == limb){
-					limbChild.end.add(PVector.sub(limbChild.start, oldEnd));
-					//limbChild.start.set(limb.end);
-				}
-			}
-		}
 	}
 
 }
