@@ -1,4 +1,4 @@
- 
+
 import SimpleOpenNI.*;
 import processing.serial.*;
 
@@ -51,7 +51,8 @@ void setup()
 	String[] serials = Serial.list();
 	println(serials);
 	for(String device : serials){
-		if (device.equals("/dev/tty.usbserial-A800eIqH")){
+		//if (device.equals("/dev/tty.usbserial-A800eIqH")){
+		if (device.equals("/dev/ttyUSB0")){ // ubuntu	
 			serial = new Serial(this, device, 9600);
 		}
 	}
@@ -199,7 +200,7 @@ void draw()
 
 	// draw and send to channels
 	float step = width / channelNum;
-	for(int i = 0; i < channelNum; i++){
+	for(int i = 1; i < channelNum; i++){
 		Channel c = channels.get(i);
 		c.draw(- width / 2 + step * i, height / 4, step, height / 4);
 		c.send();

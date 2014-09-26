@@ -93,12 +93,12 @@ class Person {
         dmxs = new ArrayList<DMX>();
         dmxs.add(new DMX(l_left_hand, channels.get(1)));
         dmxs.add(new DMX(l_right_hand, channels.get(2)));
-        dmxs.add(new DMX(l_left_arm, channels.get(4)));
-        dmxs.add(new DMX(l_right_arm, channels.get(4)));
+        //dmxs.add(new DMX(l_left_arm, channels.get(4)));
+        //dmxs.add(new DMX(l_right_arm, channels.get(4)));
         dmxs.add(new DMX(l_left_foot, channels.get(3)));
         dmxs.add(new DMX(l_right_foot, channels.get(3)));
-        dmxs.add(new DMX(l_left_thigh, channels.get(4)));
-        dmxs.add(new DMX(l_right_thigh, channels.get(4)));
+        //dmxs.add(new DMX(l_left_thigh, channels.get(4)));
+        //dmxs.add(new DMX(l_right_thigh, channels.get(4)));
         //speeds.add(new Speed(right_shoulder, right_elbow, 3, 1000));
 	}
 
