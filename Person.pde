@@ -20,7 +20,7 @@ class Person {
 
 	int id;
 
-    ArrayList<Speed> speeds;
+    ArrayList<DMX> dmxs;
 
     float damp = 0.75; // damping
 
@@ -28,6 +28,8 @@ class Person {
 	ArrayList<Limb> limbs;
 
 	boolean wiggle = false;
+
+	boolean skipUpdate = true;
 
 	Person(int id){
         // save id
@@ -69,26 +71,36 @@ class Person {
 		limbs = new ArrayList<Limb>();
 		limbs.add(new Limb("head", neck, head));
 
-		Limb left_arm = new Limb("left_arm", left_shoulder, left_elbow);
-		limbs.add(left_arm);
-		limbs.add(new Limb("left_hand", left_elbow, left_hand, left_arm));
+		Limb l_left_arm = new Limb("left_arm", left_shoulder, left_elbow);
+		limbs.add(l_left_arm);
+		Limb l_left_hand = new Limb("left_hand", left_elbow, left_hand, l_left_arm);
+		limbs.add(l_left_hand);
 		
-		Limb right_arm = new Limb("right_arm", right_shoulder, right_elbow);
-		limbs.add(right_arm);
-		limbs.add(new Limb("right_hand", right_elbow, right_hand, right_arm));
+		Limb l_right_arm = new Limb("right_arm", right_shoulder, right_elbow);
+		limbs.add(l_right_arm);
+		Limb l_right_hand = new Limb("right_hand", right_elbow, right_hand, l_right_arm);
+		limbs.add(l_right_hand);
 
-		Limb left_thigh = new Limb("left_thigh", left_hip, left_knee);
-		limbs.add(left_thigh);
-		limbs.add(new Limb("left_foot", left_knee, left_foot, left_thigh));
+		Limb l_left_thigh = new Limb("left_thigh", left_hip, left_knee);
+		limbs.add(l_left_thigh);
+		Limb l_left_foot = new Limb("left_foot", left_knee, left_foot, l_left_thigh);
+		limbs.add(l_left_foot);
 
-		Limb right_thigh = new Limb("right_thigh", right_hip, right_knee);
-		limbs.add(right_thigh);
-		limbs.add(new Limb("right_foot", right_knee, right_foot, right_thigh));
+		Limb l_right_thigh = new Limb("l_right_thigh", right_hip, right_knee);
+		limbs.add(l_right_thigh);
+		Limb l_right_foot = new Limb("right_foot", right_knee, right_foot, l_right_thigh);
+		limbs.add(l_right_foot);
 
 		// speeds
-        speeds = new ArrayList<Speed>();
-        speeds.add(new Speed(left_elbow, left_hand, 1, 10000));
-        speeds.add(new Speed(right_elbow, right_hand, 2, 10000));
+        dmxs = new ArrayList<DMX>();
+        dmxs.add(new DMX(l_left_hand, 1));
+        dmxs.add(new DMX(l_right_hand, 2));
+        dmxs.add(new DMX(l_left_arm, 3));
+        dmxs.add(new DMX(l_right_arm, 4));
+        dmxs.add(new DMX(l_left_foot, 5));
+        dmxs.add(new DMX(l_right_foot, 6));
+        dmxs.add(new DMX(l_left_thigh, 7));
+        dmxs.add(new DMX(l_right_thigh, 8));
         //speeds.add(new Speed(right_shoulder, right_elbow, 3, 1000));
 	}
 
@@ -147,11 +159,13 @@ class Person {
         pushStyle();
         noStroke();
         fill(0,255,0);
-        for(Speed speed : speeds){
+        for(DMX dmx : dmxs){
             pushMatrix();
             //translate(speed.origin.x, speed.origin.y, speed.origin.z);
-            translate(speed.ray.x, speed.ray.y, speed.ray.z);
-            box(speed.speed);
+            translate(dmx.limb.end.x, dmx.limb.end.y, dmx.limb.end.z);
+            ellipseMode(CENTER);
+            ellipse(0, 0, dmx.speed, dmx.speed);
+            //box(dmx.speed);
             popMatrix();
         }
         popStyle();
@@ -159,14 +173,24 @@ class Person {
 
 	void rig(ArrayList<PVector> rig){
 		
+
+		boolean difference = false;
+		float tolerance = 0.01;
+
 		for(int i = 0; i < rig.size(); i++){
 			PVector from = rig.get(i);
 			PVector to = points.get(i);
+			PVector diff = PVector.sub(to, from);
+			if (diff.mag() > tolerance){
+				difference = true;
+			}
 			to.set(from);
 		}
-        for(Speed speed : speeds){
-            speed.tick();
-        }
+		if (difference){
+			for(DMX dmx : dmxs){
+	            dmx.tick();
+	        }	
+		}
 	}
 
 	void drawLine(PVector v1, PVector v2){

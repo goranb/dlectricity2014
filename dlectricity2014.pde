@@ -16,13 +16,13 @@ ArrayList<Person> people = new ArrayList<Person>();
 
 void setup()
 {
-	size(640 * 2, 480 * 2, P3D);
+	size(640, 480, P3D);
 	context = new SimpleOpenNI(this);
 
 	if(context.isInit() == false){
 		println("Can't init SimpleOpenNI, maybe the camera is not connected!"); 
-		//exit();
-		//return;
+		exit();
+		return;
 	} else {
 
 		// enable depthMap generation (?)
@@ -39,16 +39,17 @@ void setup()
 	float cameraZ = ((height/2.0) / tan(PI*60.0/360.0));
 	float near = cameraZ / 10.0;
 	float far = cameraZ * 10.0;
-	println("CameraZ: " + cameraZ);	
-	println("Near: " + near);
-	println("Far: " + far);	
+	// println("CameraZ: " + cameraZ);	
+	// println("Near: " + near);
+	// println("Far: " + far);	
 	perspective(PI / 3.0, width * 1.0 / height, near, far);
 
 	// setup serial
 
 	String[] serials = Serial.list();
+	println(serials);
 	for(String device : serials){
-		if (device.equals("/dev/ttyUSB0")){
+		if (device.equals("/dev/tty.usbserial-A800eIqH")){
 			serial = new Serial(this, device, 9600);
 		}
 	}
@@ -178,19 +179,19 @@ void draw()
 	for(Person person : people){
 		person.draw();
 		if (serial != null){
-			serial.write("1c" + round(person.speeds.get(0).speed) + "w");
-			serial.write("2c" + round(person.speeds.get(1).speed) + "w");
+			serial.write("1c" + round(person.dmxs.get(0).speed) + "w");
+			serial.write("2c" + round(person.dmxs.get(1).speed) + "w");
 		}
 	}
 	popMatrix();
 	// end people
 
 	// test box
-	pushStyle();
-	noStroke();
-	fill(0, 255, 255);
-	box(20);
-	popStyle();
+	// pushStyle();
+	// noStroke();
+	// fill(0, 255, 255);
+	// box(20);
+	// popStyle();
 	// end test box
 
 	popMatrix();
