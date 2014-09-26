@@ -14,7 +14,7 @@ int testDepth = 0;
 
 ArrayList<Person> people = new ArrayList<Person>();
 ArrayList<Channel> channels = new ArrayList<Channel>();
-int channelNum = 10;
+int channelNum = 4;
 
 void setup()
 {
@@ -202,7 +202,7 @@ void draw()
 	float step = width / channelNum;
 	for(int i = 1; i < channelNum; i++){
 		Channel c = channels.get(i);
-		c.draw(- width / 2 + step * i, height / 4, step, height / 4);
+		c.draw(- width / 2 + step * i - step / 2, height / 4 - step / 2, step, height / 4);
 		c.send();
 		c.tick();
 	}

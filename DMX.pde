@@ -16,7 +16,7 @@ class DMX {
 	}
 
 	DMX(Limb limb, Channel channel){
-		this(limb, channel, 500);
+		this(limb, channel, 200);
 	}
 
 	void tick(){
