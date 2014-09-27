@@ -16,6 +16,8 @@ ArrayList<Person> people = new ArrayList<Person>();
 ArrayList<Channel> channels = new ArrayList<Channel>();
 int channelNum = 4;
 
+float spinner = 0;
+
 void setup()
 {
 	size(640 * 2, 480 * 2, P3D);
@@ -51,8 +53,8 @@ void setup()
 	String[] serials = Serial.list();
 	println(serials);
 	for(String device : serials){
-		//if (device.equals("/dev/tty.usbserial-A800eIqH")){
-		if (device.equals("/dev/ttyUSB0")){ // ubuntu	
+		if (device.equals("/dev/tty.usbserial-A800eIqH")){
+		//if (device.equals("/dev/ttyUSB0")){ // ubuntu	
 			serial = new Serial(this, device, 9600);
 		}
 	}
@@ -208,6 +210,29 @@ void draw()
 	}
 
 	popMatrix();
+
+	// spinner
+	noStroke();
+	ellipseMode(CENTER);
+	fill(255, 0, 0);
+	float ping = sin(spinner += 0.2) * 20;
+	pushMatrix();
+	translate(15, 15);
+	ellipse(0, 0, ping, ping);
+	popMatrix();
+	pushMatrix();
+	translate(width - 15, 15);
+	ellipse(0, 0, ping, ping);
+	popMatrix();
+	pushMatrix();
+	translate(width - 15, height - 15);
+	ellipse(0, 0, ping, ping);
+	popMatrix();
+	pushMatrix();
+	translate(15, height - 15);
+	ellipse(0, 0, ping, ping);
+	popMatrix();
+
 }
 
 // draw the skeleton with the selected joints

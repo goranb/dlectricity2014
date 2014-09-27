@@ -24,11 +24,21 @@ class Channel {
 		noFill();
 		rect(x, y, w, h);
 		noStroke();
-		fill(255, 128);
+		switch(channel){
+			case 1:
+				fill(255, 0, 0);
+				break;
+			case 2:
+				fill(0, 255, 0);
+				break;
+			case 3:
+				fill(0, 0, 255);
+				break;
+		}
 		rect(x, y + ((100.0 - value) / 100.0) * h, w, (value / 100.0) * h);
-		textSize(32);
-		fill(0);
-		text(value, x, y);
+		//textSize(32);
+		//fill(255);
+		//text(round(value), x, y);
 		popStyle();
 	}
 
