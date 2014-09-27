@@ -35,7 +35,7 @@ class Channel {
 	void send(){
 
 		serial.write(channel + "c" + round(value) + "w");
-		println(channel + "c ::: " + round(value) + "w");
+		//println(channel + "c ::: " + round(value) + "w");
 	}
 
 	void tick(){

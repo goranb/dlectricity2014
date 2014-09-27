@@ -18,7 +18,7 @@ int channelNum = 4;
 
 void setup()
 {
-	size(640, 480, P3D);
+	size(640 * 2, 480 * 2, P3D);
 	context = new SimpleOpenNI(this);
 
 	if(context.isInit() == false){
@@ -81,8 +81,8 @@ void draw()
 	// dept image
 	if (depthImage && context.isInit()){
 		pushMatrix();
-		translate(width, 0);
-		scale(-1, 1, 1); // mirror image
+		//translate(width, 0);
+		//scale(-1, 1, 1); // mirror image
 		image(context.userImage(), 0, 0, width, height);
 		popMatrix();
 	}

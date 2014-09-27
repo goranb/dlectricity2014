@@ -27,7 +27,7 @@ class Person {
 	ArrayList<PVector> points;
 	ArrayList<Limb> limbs;
 
-	boolean skipUpdate = true;
+	boolean active = false;
 
 	Person(int id){
         // save id
@@ -91,12 +91,12 @@ class Person {
 
 		// speeds
         dmxs = new ArrayList<DMX>();
-        dmxs.add(new DMX(l_left_hand, channels.get(3), 500));
-        dmxs.add(new DMX(l_right_hand, channels.get(1), 500));
+        dmxs.add(new DMX(l_left_hand, channels.get(3), 200));
+        dmxs.add(new DMX(l_right_hand, channels.get(1), 200));
         //dmxs.add(new DMX(l_left_arm, channels.get(4)));
         //dmxs.add(new DMX(l_right_arm, channels.get(4)));
-        dmxs.add(new DMX(l_left_foot, channels.get(2), 1000));
-        dmxs.add(new DMX(l_right_foot, channels.get(2), 1000));
+        dmxs.add(new DMX(l_left_foot, channels.get(2), 500));
+        dmxs.add(new DMX(l_right_foot, channels.get(2), 500));
         //dmxs.add(new DMX(l_left_thigh, channels.get(4)));
         //dmxs.add(new DMX(l_right_thigh, channels.get(4)));
         //speeds.add(new Speed(right_shoulder, right_elbow, 3, 1000));
@@ -107,11 +107,13 @@ class Person {
 	}
 
 	void draw(color c){
-		pushMatrix();
-		//scale(-1.0, -1.0, -1.0); // flip Y	
-		drawLines();
-        drawSpeeds();
-		popMatrix();
+		if (active){
+			pushMatrix();
+			scale(-1.0, 1.0, 1.0); // flip Y	
+			drawLines();
+	        drawSpeeds();
+			popMatrix();
+		}
 	}
 
 	void drawJoints(){
@@ -184,6 +186,9 @@ class Person {
 			for(DMX dmx : dmxs){
 	            dmx.tick();
 	        }
+	        active = true;
+		} else {
+			active = false;
 		}
 	}
 

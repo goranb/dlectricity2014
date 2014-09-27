@@ -15,7 +15,7 @@ class Limb {
 		this.name = name;
 		this.start = start;
     	this.end = end;
-    	println("INIT: ", start, end);
+    	//println("INIT: ", start, end);
 	}
 
 }
